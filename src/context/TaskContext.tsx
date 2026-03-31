@@ -1,32 +1,40 @@
-import { createContext, useContext, useReducer, type ReactNode } from 'react';
+import { createContext, useEffect, useReducer, type ReactNode } from 'react';
 import {
   initialState,
   taskReducer,
   type Action,
   type State,
 } from './taskReducer';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 type TaskContextType = {
   state: State;
   dispatch: React.Dispatch<Action>;
 };
 
-const TaskContext = createContext<TaskContextType | undefined>(undefined);
+export const TaskContext = createContext<TaskContextType | undefined>(
+  undefined,
+);
 
 export function TaskProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(taskReducer, initialState);
+  const [storedState, setStoredState] = useLocalStorage<State>(
+    'task-app',
+    initialState,
+  );
+
+  const [state, dispatch] = useReducer(
+    taskReducer,
+    storedState,
+    (initial) => initial,
+  );
+
+  useEffect(() => {
+    setStoredState(state);
+  }, [state, setStoredState]);
 
   return (
     <TaskContext.Provider value={{ state, dispatch }}>
       {children}
     </TaskContext.Provider>
   );
-}
-
-export function useTasks() {
-  const context = useContext(TaskContext);
-  if (!context) {
-    throw new Error('useTasks must be used withing TaskProvider');
-  }
-  return context;
 }

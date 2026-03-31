@@ -1,28 +1,35 @@
+import { useState } from 'react';
 import './App.css';
-import { useTasks } from './context/TaskContext';
+import AddTaskForm from './features/tasks/AddTaskForm';
+import TaskList from './features/tasks/TaskList';
+import ProjectList from './features/projects/ProjectList';
+import AddProjectForm from './features/projects/AddProjectForm';
+import { Button } from './shared/components/ui/button';
+import { useTasks } from './hooks/useTasks';
 
 function App() {
-  const { state, dispatch } = useTasks();
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
+    null,
+  );
+  const { dispatch } = useTasks();
 
   return (
-    <div>
-      <h1>Tasks: {state.tasks.length}</h1>
+    <div className="flex flex-col gap-5">
+      <h1>Team Task Hub</h1>
 
-      <button
-        onClick={() =>
-          dispatch({
-            type: 'ADD_TASK',
-            payload: {
-              id: crypto.randomUUID(),
-              title: 'my first task',
-              completed: false,
-              projectId: 'default',
-            },
-          })
-        }
-      >
-        Add Task
-      </button>
+      <AddProjectForm />
+
+      <ProjectList
+        selectedProjectId={selectedProjectId}
+        onSelect={setSelectedProjectId}
+      />
+
+      <AddTaskForm selectedProjectId={selectedProjectId} />
+
+      <TaskList selectedProjectId={selectedProjectId} />
+      <div className="flex justify-center flex-1">
+        <Button onClick={() => dispatch({ type: 'RESET' })}>Reset</Button>
+      </div>
     </div>
   );
 }
