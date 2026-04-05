@@ -21,7 +21,16 @@ export function useTaskFilters(tasks: Task[], filters: TaskFilters) {
       });
   }, [tasks, filters]);
 
+  const stats = useMemo(() => {
+    const total = filteredTasks.length;
+    const completed = filteredTasks.filter((t) => t.completed).length;
+    const active = total - completed;
+
+    return { total, completed, active };
+  }, [filteredTasks]);
+
   return {
     filteredTasks,
+    stats,
   };
 }
