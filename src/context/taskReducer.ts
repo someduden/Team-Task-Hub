@@ -24,7 +24,13 @@ export function taskReducer(state: State, action: Action): State {
     case 'ADD_TASK':
       return {
         ...state,
-        tasks: [...state.tasks, action.payload],
+        tasks: [
+          ...state.tasks,
+          {
+            ...action.payload,
+            priority: action.payload.priority ?? 'medium',
+          },
+        ],
       };
 
     case 'TOGGLE_TASK':
@@ -53,9 +59,7 @@ export function taskReducer(state: State, action: Action): State {
       return {
         ...state,
         tasks: state.tasks.map((task) =>
-          task.id === action.payload.id
-            ? { ...task, title: action.payload.title }
-            : task,
+          task.id === action.payload.id ? { ...task, ...action.payload } : task,
         ),
       };
 

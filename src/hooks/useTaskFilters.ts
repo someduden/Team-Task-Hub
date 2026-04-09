@@ -2,6 +2,12 @@ import type { TaskFilters } from '@/types/filters';
 import type { Task } from '@/types/types';
 import { useMemo } from 'react';
 
+const priorityOrder = {
+  high: 0,
+  medium: 1,
+  low: 2,
+};
+
 export function useTaskFilters(tasks: Task[], filters: TaskFilters) {
   const filteredTasks = useMemo(() => {
     return tasks
@@ -17,7 +23,14 @@ export function useTaskFilters(tasks: Task[], filters: TaskFilters) {
         return true;
       })
       .filter((task) => {
+        if (filters.priority === 'all') return true;
+        return task.priority === filters.priority;
+      })
+      .filter((task) => {
         return task.title.toLowerCase().includes(filters.search.toLowerCase());
+      })
+      .sort((a, b) => {
+        return priorityOrder[a.priority] - priorityOrder[b.priority];
       });
   }, [tasks, filters]);
 

@@ -11,7 +11,8 @@ import TaskList from '@/features/tasks/TaskList';
 export function Dashboard() {
   const { state, dispatch } = useTasks();
 
-  const { filters, setSearch, setStatus, setProjectId } = useTaskFilterState();
+  const { filters, setSearch, setStatus, setPriority, setProjectId } =
+    useTaskFilterState();
 
   const { filteredTasks, stats } = useTaskFilters(state.tasks, filters);
 
@@ -19,55 +20,75 @@ export function Dashboard() {
     stats.total === 0 ? 0 : Math.round((stats.completed / stats.total) * 100);
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold">Team Task Hub</h1>
+    <div className="flex h-screen">
+      {/* 🧭 SIDEBAR */}
+      <aside className="w-64 border-r p-4 flex flex-col gap-4 bg-gray-50">
+        <h2 className="text-lg font-semibold">Projects</h2>
 
-      {/* Filters */}
-      <div className="flex gap-3">
-        <input
-          value={filters.search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search tasks..."
+        <AddProjectForm />
+
+        <ProjectList
+          selectedProjectId={filters.projectId}
+          onSelect={setProjectId}
         />
+      </aside>
 
-        <select
-          value={filters.status}
-          onChange={(e) => setStatus(e.target.value as typeof filters.status)}
-        >
-          <option value="all">All</option>
-          <option value="active">Active</option>
-          <option value="completed">Completed</option>
-        </select>
-      </div>
+      {/* 📝 MAIN PANEL */}
+      <main className="flex-1 p-6 flex flex-col gap-6">
+        {/* Header */}
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold">Tasks</h1>
 
-      {/* Layout */}
-      <div className="grid grid-cols-3 gap-6">
-        {/* LEFT: Projects */}
-        <div className="space-y-4">
-          <AddProjectForm />
+          <div className="flex gap-2">
+            <input
+              value={filters.search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search..."
+              className="px-2 py-1 border rounded"
+            />
 
-          <ProjectList
-            selectedProjectId={filters.projectId}
-            onSelect={setProjectId}
-          />
+            <select
+              value={filters.status}
+              onChange={(e) =>
+                setStatus(e.target.value as typeof filters.status)
+              }
+              className="px-2 py-1 border rounded"
+            >
+              <option value="all">All</option>
+              <option value="active">Active</option>
+              <option value="completed">Completed</option>
+            </select>
+            <select
+              value={filters.priority}
+              onChange={(e) =>
+                setPriority(e.target.value as typeof filters.priority)
+              }
+              className="px-2 py-1 border rounded"
+            >
+              <option value="all">All priorities</option>
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
+          </div>
         </div>
 
-        {/* MIDDLE: Tasks */}
-        <div className="space-y-4 col-span-2">
-          <AddTaskForm selectedProjectId={filters.projectId} />
+        {/* Add Task */}
+        <AddTaskForm selectedProjectId={filters.projectId} />
 
-          <TaskList tasks={filteredTasks} />
+        {/* Task List */}
+        <TaskList tasks={filteredTasks} />
+
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-4">
+          <StatsCard label="Total" value={stats.total} />
+          <StatsCard label="Completed" value={stats.completed} />
+          <StatsCard label="Active" value={stats.active} />
         </div>
-      </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-3 gap-4">
-        <StatsCard label="Total" value={stats.total} />
-        <StatsCard label="Completed" value={stats.completed} />
-        <StatsCard label="Active" value={stats.active} />
-      </div>
-
-      <ProgressBar value={completionRate} />
+        {/* Progress */}
+        <ProgressBar value={completionRate} />
+      </main>
 
       {/* Reset */}
       <button onClick={() => dispatch({ type: 'RESET' })}>Reset App</button>
