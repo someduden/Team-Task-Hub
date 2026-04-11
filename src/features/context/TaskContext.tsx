@@ -5,7 +5,7 @@ import {
   type Action,
   type State,
 } from './taskReducer';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { useLocalStorage } from '@/shared/hooks/useLocalStorage';
 
 type TaskContextType = {
   state: State;

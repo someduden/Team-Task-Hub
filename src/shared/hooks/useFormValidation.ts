@@ -1,5 +1,5 @@
-import { projectSchema } from '@/features/schema/projectSchema';
-import { taskSchema } from '@/features/schema/taskSchema';
+import { projectSchema } from '@/features/projects/schema/projectSchema';
+import { taskSchema } from '@/features/tasks/schema/taskSchema';
 import { useState } from 'react';
 import type { ZodSchema } from 'zod';
 

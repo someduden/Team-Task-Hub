@@ -2,7 +2,7 @@ import {
   type Priority,
   type StatusFilter,
   type TaskFilters,
-} from '@/types/filters';
+} from '@/shared/types/filters';
 import { useState } from 'react';
 
 export function useTaskFilterState(initial?: Partial<TaskFilters>) {

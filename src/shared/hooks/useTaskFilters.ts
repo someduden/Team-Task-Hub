@@ -1,5 +1,5 @@
-import type { TaskFilters } from '@/types/filters';
-import type { Task } from '@/types/types';
+import type { TaskFilters } from '@/shared/types/filters';
+import type { Task } from '@/shared/types/types';
 import { useMemo } from 'react';
 
 const priorityOrder = {

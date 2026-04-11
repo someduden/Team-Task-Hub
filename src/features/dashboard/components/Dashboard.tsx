@@ -1,12 +1,13 @@
-import { useTaskFilters } from '@/hooks/useTaskFilters';
-import { useTasks } from '@/hooks/useTasks';
+import { useTaskFilters } from '@/shared/hooks/useTaskFilters';
+import { useTasks } from '@/shared/hooks/useTasks';
 import { StatsCard } from './StatsCard';
 import { ProgressBar } from './ProgressBar';
-import { useTaskFilterState } from '@/hooks/useTaskFilterState';
-import AddProjectForm from '@/features/projects/AddProjectForm';
-import ProjectList from '@/features/projects/ProjectList';
-import AddTaskForm from '@/features/tasks/AddTaskForm';
-import TaskList from '@/features/tasks/TaskList';
+import { useTaskFilterState } from '@/shared/hooks/useTaskFilterState';
+import AddTaskForm from '@/features/tasks/components/AddTaskForm';
+import TaskList from '@/features/tasks/components/TaskList';
+import { Button } from '@/shared/components/ui/button';
+import AddProjectForm from '@/features/projects/components/AddProjectForm';
+import ProjectList from '@/features/projects/components/ProjectList';
 
 export function Dashboard() {
   const { state, dispatch } = useTasks();
@@ -21,7 +22,7 @@ export function Dashboard() {
 
   return (
     <div className="flex h-screen">
-      {/* 🧭 SIDEBAR */}
+      {/* SIDEBAR */}
       <aside className="w-64 border-r p-4 flex flex-col gap-4 bg-gray-50">
         <h2 className="text-lg font-semibold">Projects</h2>
 
@@ -33,10 +34,9 @@ export function Dashboard() {
         />
       </aside>
 
-      {/* 📝 MAIN PANEL */}
+      {/* MAIN PANEL */}
       <main className="flex-1 p-6 flex flex-col gap-6">
-        {/* Header */}
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center flex-col">
           <h1 className="text-2xl font-bold">Tasks</h1>
 
           <div className="flex gap-2">
@@ -73,10 +73,8 @@ export function Dashboard() {
           </div>
         </div>
 
-        {/* Add Task */}
         <AddTaskForm selectedProjectId={filters.projectId} />
 
-        {/* Task List */}
         <TaskList tasks={filteredTasks} />
 
         {/* Stats */}
@@ -86,12 +84,10 @@ export function Dashboard() {
           <StatsCard label="Active" value={stats.active} />
         </div>
 
-        {/* Progress */}
         <ProgressBar value={completionRate} />
-      </main>
 
-      {/* Reset */}
-      <button onClick={() => dispatch({ type: 'RESET' })}>Reset App</button>
+        <Button onClick={() => dispatch({ type: 'RESET' })}>Reset App</Button>
+      </main>
     </div>
   );
 }

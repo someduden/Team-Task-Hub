@@ -1,4 +1,4 @@
-import type { Project, Task } from '../types/types';
+import type { Project, Task } from '../../shared/types/types';
 
 export type State = {
   tasks: Task[];

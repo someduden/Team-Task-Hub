@@ -1,5 +1,4 @@
-import { useTasks } from '@/hooks/useTasks';
-import ProjectItem from './ProjectItem';
+import { useTasks } from '@/shared/hooks/useTasks';
 import { Button } from '@/shared/components/ui/button';
 
 type Props = {
@@ -11,7 +10,7 @@ function ProjectList({ selectedProjectId, onSelect }: Props) {
   const { state } = useTasks();
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-1.5">
       <Button
         onClick={() => onSelect(null)}
         className={`text-left px-2 py-1 rounded ${

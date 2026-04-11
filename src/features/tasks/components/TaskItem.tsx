@@ -1,5 +1,5 @@
-import { useTasks } from '@/hooks/useTasks';
-import type { Task } from '@/types/types';
+import { useTasks } from '@/shared/hooks/useTasks';
+import type { Task } from '@/shared/types/types';
 import { useState } from 'react';
 
 type Props = {
@@ -58,7 +58,6 @@ function TaskItem({ task }: Props) {
         className={`w-2 h-2 rounded-full ${priorityColors[task.priority]}`}
       />
 
-      {/* content */}
       <div className="flex-1">
         {isEditing ? (
           <input
@@ -84,20 +83,19 @@ function TaskItem({ task }: Props) {
         )}
       </div>
 
-      {/* actions (hidden until hover) */}
       <div className="opacity-0 group-hover:opacity-100 flex gap-2 transition">
         <button
           onClick={() => setIsEditing(true)}
           className="text-gray-400 hover:text-black"
         >
-          ✏️
+          Edit
         </button>
 
         <button
           onClick={handleDelete}
           className="text-gray-400 hover:text-red-500"
         >
-          🗑
+          Delete
         </button>
       </div>
     </div>

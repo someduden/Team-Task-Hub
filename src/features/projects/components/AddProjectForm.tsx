@@ -1,8 +1,8 @@
-import { useFormValidation } from '@/hooks/useFormValidation';
-import { useTasks } from '@/hooks/useTasks';
-import { projectSchema } from '../schema/projectSchema';
+import { useFormValidation } from '@/shared/hooks/useFormValidation';
+import { useTasks } from '@/shared/hooks/useTasks';
 import { Input } from '@/shared/components/ui/input';
 import { Button } from '@/shared/components/ui/button';
+import { projectSchema } from '../schema/projectSchema';
 
 function AddProjectForm() {
   const { dispatch } = useTasks();
@@ -21,7 +21,7 @@ function AddProjectForm() {
     });
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-1.5">
       <Input
         value={values.name}
         onChange={(e) => handleChange('name', e.target.value)}

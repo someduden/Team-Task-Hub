@@ -1,30 +1,30 @@
 import {
-  editProjectSchema,
+  editTaskSchema,
   useFormValidation,
-} from '@/hooks/useFormValidation';
-import { useTasks } from '@/hooks/useTasks';
+} from '@/shared/hooks/useFormValidation';
+import { useTasks } from '@/shared/hooks/useTasks';
 import { Button } from '@/shared/components/ui/button';
 import { Input } from '@/shared/components/ui/input';
-import type { Project } from '@/types/types';
+import type { Task } from '@/shared/types/types';
 
 type Props = {
-  project: Project;
+  task: Task;
   onCancel: () => void;
   onSave: () => void;
 };
 
-function ProjectEditForm({ project, onCancel, onSave }: Props) {
+function TaskEditForm({ task, onCancel, onSave }: Props) {
   const { dispatch } = useTasks();
 
   const { values, errors, handleChange, handleSubmit } = useFormValidation(
-    editProjectSchema,
-    { name: project.name },
+    editTaskSchema,
+    { title: task.title },
     (validData) => {
       dispatch({
-        type: 'UPDATE_PROJECT',
+        type: 'UPDATE_TASK',
         payload: {
-          id: project.id,
-          name: validData.name,
+          id: task.id,
+          title: validData.title,
         },
       });
 
@@ -35,11 +35,11 @@ function ProjectEditForm({ project, onCancel, onSave }: Props) {
   return (
     <form onSubmit={handleSubmit}>
       <Input
-        value={values.name}
-        onChange={(e) => handleChange('name', e.target.value)}
+        value={values.title}
+        onChange={(e) => handleChange('title', e.target.value)}
       />
 
-      {errors.name && <p>{errors.name}</p>}
+      {errors.title && <p>{errors.title}</p>}
 
       <Button type="submit">Save</Button>
       <Button type="button" onClick={onCancel}>
@@ -49,4 +49,4 @@ function ProjectEditForm({ project, onCancel, onSave }: Props) {
   );
 }
 
-export default ProjectEditForm;
+export default TaskEditForm;

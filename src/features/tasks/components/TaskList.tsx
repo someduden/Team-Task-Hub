@@ -1,5 +1,5 @@
 import TaskItem from './TaskItem';
-import type { Task } from '@/types/types';
+import type { Task } from '@/shared/types/types';
 
 type Props = {
   tasks: Task[];
