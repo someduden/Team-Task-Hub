@@ -87,6 +87,9 @@ export function Dashboard() {
         <ProgressBar value={completionRate} />
 
         <Button onClick={() => dispatch({ type: 'RESET' })}>Reset App</Button>
+        <p className="text-red-500">
+          Beware: Resetting will remove all data from the site
+        </p>
       </main>
     </div>
   );
